@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 source "https://rubygems.org"
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
@@ -34,6 +36,9 @@ gem "bootsnap", require: false
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
 # gem "image_processing", "~> 1.2"
 
+# Adds safeguards to prevent dangerous database migrations
+gem "strong_migrations", "~> 2.1"
+
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
@@ -41,8 +46,27 @@ group :development, :test do
   # Static analysis for security vulnerabilities [https://brakemanscanner.org/]
   gem "brakeman", require: false
 
-  # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
+  # Factory bot for setting up Ruby objects as test data
+  gem "factory_bot_rails", "~> 6.4", ">= 6.4.4"
+
+  # Faker gem to generate fake data for testing and development
+  gem "faker", "~> 3.5", ">= 3.5.1"
+
+  # Debugging tool for the Rails console
+  gem "pry-rails", "~> 0.3.11"
+
+  # Gems for code quality, performance improvements, and adherence to Rails standards
+  gem "rubocop", "~> 1.69", ">= 1.69.2"
+  gem "rubocop-performance", "~> 1.23"
+  gem "rubocop-rails", "~> 2.27"
   gem "rubocop-rails-omakase", require: false
+  gem "rubocop-minitest", "~> 0.36.0"
+
+  # Provides additional matchers for testing with RSpec
+  gem "shoulda-matchers", "~> 6.4"
+
+  # Code coverage analysis tool for measuring test coverage
+  gem "simplecov", "~> 0.22.0"
 end
 
 group :development do
