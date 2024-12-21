@@ -1,26 +1,18 @@
 <div class="container">
-  <h1>Task List Assignment</h1>
-  <h2>Kadince</h2>
+  <h1 class="text-center">Task List Assignment</h1>
+  <h2 class="text-center">Kadince</h2>
 
-  <% if flash[:alert] %>
-    <div class="alert alert-danger" role="alert">
-      <%= flash[:alert] %>
-    </div>
-  <% end %>
-
-  <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-    <%= f.email_field :email, autofocus: true, autocomplete: "email", placeholder: "Email", class: "form-control" %>
-    <%= f.password_field :password, autocomplete: "current-password", placeholder: "Password", class: "form-control" %>
-
-    <% if devise_mapping.rememberable? %>
-      <div class="form-group mb-3 d-flex align-items-center">
-        <%= f.check_box :remember_me, id: "remember_me", class: "form-check-input me-2" %>
-        <%= f.label :remember_me, "Remember me", for: "remember_me", class: "form-check-label mb-0" %>
+  <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { class: "form-login" }) do |f| %>
+    <% if flash[:alert] %>
+      <div class="alert alert-danger" role="alert">
+        <%= flash[:alert] %>
       </div>
     <% end %>
 
-    <%= f.submit "Log In", class: "btn-custom" %>
-  <% end %>
+    <%= f.email_field :email, autofocus: true, autocomplete: "email", placeholder: "Email", class: "form-control" %>
+    <%= f.password_field :password, autocomplete: "current-password", placeholder: "Password", class: "form-control" %>
 
-  <%= render "devise/shared/links" %>
+    <%= f.submit "Log In", class: "btn-custom" %>
+    <%= link_to "Sign up", new_registration_path(resource_name), class: "btn-custom" %>
+  <% end %>
 </div>

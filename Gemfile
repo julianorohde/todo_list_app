@@ -57,6 +57,9 @@ group :development, :test do
   # Debugging tool for the Rails console
   gem "pry-rails", "~> 0.3.11"
 
+  # Gem for enhancing controller testing
+  gem "rails-controller-testing"
+
   # Gems for code quality, performance improvements, and adherence to Rails standards
   gem "rubocop", "~> 1.69", ">= 1.69.2"
   gem "rubocop-performance", "~> 1.23"
