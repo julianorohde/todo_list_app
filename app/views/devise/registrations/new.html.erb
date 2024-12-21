@@ -1,14 +1,21 @@
 <div class="container">
-  <h1>Task List Assignment</h1>
-  <h2>Kadince</h2>
+  <h1 class="text-center">Task List Assignment</h1>
+  <h2 class="text-center">Kadince</h2>
 
-  <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
-    <%= render "devise/shared/form_field", field: f.text_field(:name, autofocus: true, placeholder: "Name", class: "form-control #{'is-invalid' if resource.errors[:name].any?}"), errors: resource.errors[:name] %>
-    <%= render "devise/shared/form_field", field: f.email_field(:email, autocomplete: "email", placeholder: "Email", class: "form-control #{'is-invalid' if resource.errors[:email].any?}"), errors: resource.errors[:email] %>
-    <%= render "devise/shared/form_field", field: f.password_field(:password, autocomplete: "new-password", placeholder: "Password", class: "form-control #{'is-invalid' if resource.errors[:password].any?}"), errors: resource.errors[:password] %>
+  <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { class: "form-login" }) do |f| %>
+    <% if flash[:alert] %>
+      <div class="alert alert-danger" role="alert">
+        <%= flash[:alert] %>
+      </div>
+    <% end %>
+
+    <%= f.text_field :name, autofocus: true, placeholder: "Name", class: "form-control #{'is-invalid' if resource.errors[:name].any?}" %>
+
+    <%= f.email_field :email, autocomplete: "email", placeholder: "Email", class: "form-control #{'is-invalid' if resource.errors[:email].any?}" %>
+
+    <%= f.password_field :password, autocomplete: "new-password", placeholder: "Password", class: "form-control #{'is-invalid' if resource.errors[:password].any?}" %>
 
     <%= f.submit "Sign Up", class: "btn-custom" %>
+    <%= link_to "Log in", new_session_path(resource_name), class: "btn-custom" %>
   <% end %>
-
-  <%= render "devise/shared/links" %>
 </div>
