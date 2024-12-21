@@ -16,7 +16,8 @@ Dir[Rails.root.join("test/support/**/*.rb")].each { |f| require f }
 
 class ActiveSupport::TestCase
   include FactoryBot::Syntax::Methods
-  
+  include Devise::Test::IntegrationHelpers
+
   # Run tests in parallel with specified workers
   parallelize(workers: :number_of_processors)
 
