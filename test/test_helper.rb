@@ -4,10 +4,13 @@ ENV["RAILS_ENV"] ||= "test"
 
 require_relative "../config/environment"
 require "rails/test_help"
-require 'faker'
-require 'simplecov'
-require 'shoulda/matchers'
-require 'shoulda/context'
+require "faker"
+require "simplecov"
+require "shoulda/matchers"
+require "shoulda/context"
+require "minitest/autorun"
+require "mocha/minitest"
+require "ostruct"
 
 SimpleCov.start
 

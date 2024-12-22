@@ -2,7 +2,7 @@
 
 class TodosController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_todo, only: %i[edit update destroy]
+  before_action :set_todo, only: %i[update destroy]
 
   def index
     @todos = current_user.todos.order(:status, :title)
@@ -11,30 +11,32 @@ class TodosController < ApplicationController
   end
 
   def create
-    todo = current_user.todos.create(permitted_params)
-    
-    if todo.save
+    result = Todo::Create::UseCase.call(user: current_user, params: permitted_params)
+
+    if result.successful?
       redirect_to todos_path
     else
-      flash_error_and_redirect(todo)
+      flash_error_and_redirect(result)
     end
   end
 
   def update
-    if todo.update(permitted_params)
+    result = Todo::Update::UseCase.call(user: current_user, params: permitted_params)
+
+    if result.successful?
       redirect_to todos_path
     else
-      flash_error_and_redirect(todo)
+      flash_error_and_redirect(result)
     end
   end
 
   def destroy
-    if todo
-      todo.destroy
-
+    result = Todo::Destroy::UseCase.call(user: current_user, params: { id: params[:id] })
+    
+    if result.successful?
       handle_destroy_response
     else
-      head :not_found
+      flash_error_and_redirect(result)
     end
   end
 
@@ -47,11 +49,11 @@ class TodosController < ApplicationController
   end
   
   def permitted_params
-    params.require(:todo).permit(:title, :status)
+    params.require(:todo).permit(:title, :status).merge(id: params[:id])
   end
 
-  def flash_error_and_redirect(todo)
-    flash[:alert] = todo.errors.full_messages.to_sentence
+  def flash_error_and_redirect(result)
+    flash[:alert] = result.attributes.messages[:base].join(', ')
     redirect_to todos_path
   end
 
