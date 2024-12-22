@@ -50,26 +50,26 @@ class TodosControllerTest < ActionDispatch::IntegrationTest
     end
 
     context "#create method" do
-      should "create a new todo and redirect to index" do
-        todo_params = { title: 'New Todo' }
+      should "call the Todo::Create::UseCase, and if it's successful, redirect to the index" do
+        result_mock = Minitest::Mock.new
+        result_mock.expect :successful?, true
 
-        assert_difference "Todo.count", 1 do
-          post todos_path, params: { todo: todo_params }
-        end
+        Todo::Create::UseCase.expects(:call).returns(result_mock)
 
-        assert_response :redirect
+        post todos_path, params: { todo: { title: 'Todo title' } }
+
         assert_redirected_to todos_path
-        assert_equal todo_params[:title], Todo.last.title
       end
 
-      should "not create a todo with invalid params" do
-        invalid_params = { title: "" }
+      should "call the Todo::Create::UseCase, and if it's unsuccessful, invoke the flash_error_and_redirect method" do
+        result_mock = Minitest::Mock.new
+        result_mock.expect :successful?, false
+        result_mock.expect :attributes, OpenStruct.new(messages: { base: ["Title can't be blank"] })
 
-        assert_no_difference "Todo.count" do
-          post todos_path, params: { todo: invalid_params }
-        end
+        Todo::Create::UseCase.expects(:call).returns(result_mock)
 
-        assert_response :redirect
+        post todos_path, params: { todo: { title: '' } }
+
         assert_redirected_to todos_path
         assert_equal "Title can't be blank", flash[:alert]
       end
@@ -80,27 +80,26 @@ class TodosControllerTest < ActionDispatch::IntegrationTest
         @todo = create(:todo, user: @user)
       end
 
-      should "update a todo and redirect to index" do
-        new_params = { title: 'Updated Title' }
+      should "call the Todo::Update::UseCase, and if it's successful, redirect to the index" do
+        result_mock = Minitest::Mock.new
+        result_mock.expect :successful?, true
 
-        assert_changes '@todo.reload.title' do
-          patch todo_path(@todo), params: { todo: new_params }
-        end
+        Todo::Update::UseCase.expects(:call).returns(result_mock)
 
-        assert_response :redirect
+        patch todo_path(@todo), params: { todo: { title: 'Updated Title' } }
+
         assert_redirected_to todos_path
-
-        assert_equal new_params[:title], @todo.reload.title
       end
 
-      should "not update a todo with invalid params" do
-        invalid_params = { title: '' }
+      should "call the Todo::Update::UseCase, and if it's unsuccessful, invoke the flash_error_and_redirect method" do
+        result_mock = Minitest::Mock.new
+        result_mock.expect :successful?, false
+        result_mock.expect :attributes, OpenStruct.new(messages: { base: ["Title can't be blank"] })
 
-        assert_no_changes '@todo.title' do
-          patch todo_path(@todo), params: { todo: invalid_params }
-        end
+        Todo::Update::UseCase.expects(:call).returns(result_mock)
 
-        assert_response :redirect
+        patch todo_path(@todo), params: { todo: { title: '' } }
+
         assert_redirected_to todos_path
         assert_equal "Title can't be blank", flash[:alert]
       end
@@ -111,22 +110,28 @@ class TodosControllerTest < ActionDispatch::IntegrationTest
         @todo = create(:todo, user: @user)
       end
 
-      should "destroy a todo and respond correctly" do
-        assert_difference "Todo.count", -1 do
-          delete todo_path(@todo)
-        end
-    
+      should "call the Todo::Update::UseCase, and if it's successful invoke the handle_destroy_response method" do
+        result_mock = Minitest::Mock.new
+        result_mock.expect :successful?, true
+
+        Todo::Destroy::UseCase.expects(:call).returns(result_mock)
+
+        delete todo_path(@todo)
+
         assert_response :no_content
       end
     
       should "return not found for a non-existent todo" do
-        @todo.destroy
+        result_mock = Minitest::Mock.new
+        result_mock.expect :successful?, false
+        result_mock.expect :attributes, OpenStruct.new(messages: { base: ['You are not authorized to delete this Todo!'] })
 
-        assert_no_difference "Todo.count" do
-          delete todo_path(@todo)
-        end
-    
-        assert_response :not_found
+        Todo::Destroy::UseCase.expects(:call).returns(result_mock)
+
+        delete todo_path(@todo)
+
+        assert_redirected_to todos_path
+        assert_equal 'You are not authorized to delete this Todo!', flash[:alert]
       end
     end
   end
