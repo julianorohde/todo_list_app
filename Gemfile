@@ -56,6 +56,8 @@ group :development, :test do
   # Faker gem to generate fake data for testing and development
   gem "faker", "~> 3.5", ">= 3.5.1"
 
+  gem 'mocha', '~> 2.7', '>= 2.7.1'
+
   # Debugging tool for the Rails console
   gem "pry-rails", "~> 0.3.11"
 
