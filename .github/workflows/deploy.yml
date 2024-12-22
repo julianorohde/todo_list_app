@@ -37,6 +37,8 @@ jobs:
           bundle install
 
       - name: Setup Database
+        env:
+          RAILS_ENV: test
         run: |
           mkdir -p config
           cp .github/config/database.yml.github_actions config/database.yml
