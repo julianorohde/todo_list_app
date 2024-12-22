@@ -1,0 +1,45 @@
+name: Tests Suite
+
+on:
+  pull_request:
+    branches:
+      - '**'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    services:
+      db:
+        image: postgres:14
+        ports:
+          - 5432:5432
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: todo_list_kadince_test
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        bundler-cache: true
+        ruby-version: '3.3.2'
+
+    - name: Install dependencies
+      run: |
+        gem install bundler
+        bundle install
+
+    - name: Setup database
+      run: |
+        cp .github/config/database.yml.github_actions config/database2.yml
+        bundle exec rails db:create
+        bundle exec rails db:migrate
+
+    - name: Run tests
+      run: |
+        bundle exec rails t
