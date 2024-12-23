@@ -12,7 +12,6 @@ development:
 
 test:
   <<: *default
-  host: localhost
   database: todo_list_kadince_test
 
 production:
