@@ -30,16 +30,22 @@ jobs:
         ruby-version: '3.3.2'
 
     - name: Install dependencies
+      env:
+        RAILS_ENV: test
       run: |
         gem install bundler
         bundle install
 
     - name: Setup database
+      env:
+        RAILS_ENV: test
       run: |
         cp .github/config/database.yml.github_actions config/database2.yml
         bundle exec rails db:create
         bundle exec rails db:migrate
 
     - name: Run tests
+      env:
+        RAILS_ENV: test
       run: |
         bundle exec rails t
