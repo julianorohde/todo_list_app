@@ -3,7 +3,7 @@ default: &default
   encoding: unicode
   user: postgres
   password: postgres
-  host: localhost
+  host: db
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
 
 development:
@@ -12,6 +12,7 @@ development:
 
 test:
   <<: *default
+  host: localhost
   database: todo_list_kadince_test
 
 production:
