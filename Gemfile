@@ -39,7 +39,7 @@ gem "bootsnap", require: false
 # gem "image_processing", "~> 1.2"
 
 # Adds safeguards to prevent dangerous database migrations
-gem "strong_migrations", "~> 2.1"
+gem "strong_migrations", "~> 2.2"
 
 gem 'devise', '~> 4.9', '>= 4.9.4'
 
