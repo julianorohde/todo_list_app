@@ -69,7 +69,7 @@ group :development, :test do
   gem "rubocop-performance", "~> 1.23"
   gem "rubocop-rails", "~> 2.27"
   gem "rubocop-rails-omakase", require: false
-  gem "rubocop-minitest", "~> 0.36.0"
+  gem "rubocop-minitest", "~> 0.37.1"
 
   # Provides additional matchers for testing with RSpec
   gem "shoulda-matchers", "~> 6.4"
