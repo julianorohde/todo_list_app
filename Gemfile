@@ -66,7 +66,7 @@ group :development, :test do
 
   # Gems for code quality, performance improvements, and adherence to Rails standards
   gem "rubocop", "~> 1.69", ">= 1.69.2"
-  gem "rubocop-performance", "~> 1.23"
+  gem "rubocop-performance", "~> 1.24"
   gem "rubocop-rails", "~> 2.27"
   gem "rubocop-rails-omakase", require: false
   gem "rubocop-minitest", "~> 0.36.0"
